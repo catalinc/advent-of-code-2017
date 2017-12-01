@@ -1,2 +1,1 @@
-# advent-of-code
-Solutions to Advent Of Code contest.
+Solutions to [Advent Of Code](http://adventofcode.com) contest.
