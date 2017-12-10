@@ -1,1 +1,1 @@
-Solutions to [Advent Of Code](http://adventofcode.com) contest.
+Solutions to [Advent Of Code 2017](http://adventofcode.com/2017) contest.
