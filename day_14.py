@@ -39,28 +39,27 @@ def count_used_blocks(m):
 
 
 def count_regions(m):
-    count, rows, cols = 2, len(m), len(m[0])
+    region, rows, cols = 2, len(m), len(m[0])
     for i in range(rows):
         for j in range(cols):
             if m[i][j] == 1:
-                if i >= 1:
-                    if m[i - 1][j] > 1:
-                        m[i][j] = m[i - 1][j]
-                        continue
-                if j >= 1:
-                    if m[i][j - 1] > 1:
-                        m[i][j] = m[i][j - 1]
-                        continue
-                if j < cols - 1:
-                    if m[i][j + 1] > 1:
-                        m[i][j] = m[i][j + 1]
-                        continue
-                m[i][j] = count
-                if i < rows - 1:
-                    if m[i + 1][j] == 1:
-                        m[i + 1][j] = m[i][j]
-                count += 1
-    return count
+                mark_region(m, region, i, j)
+                region += 1
+    return region - 2
+
+
+def mark_region(m, region, i, j):
+    rows = len(m)
+    cols = len(m[0])
+    m[i][j] = region
+    if i >= 1 and m[i - 1][j] == 1:
+        mark_region(m, region, i - 1, j)
+    if i < rows - 1 and m[i + 1][j] == 1:
+        mark_region(m, region, i + 1, j)
+    if j >= 1 and m[i][j - 1] == 1:
+        mark_region(m, region, i, j - 1)
+    if j < cols - 1 and m[i][j + 1] == 1:
+        mark_region(m, region, i, j + 1)
 
 
 class Test(unittest.TestCase):
