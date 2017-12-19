@@ -20,7 +20,7 @@ class Program(object):
                 op1 = tokens[1]
                 op2 = 0
                 if len(tokens) == 3:
-                    value = tokens[2]
+                    op2 = tokens[2]
                 self.instructions.append(Instruction(
                     code=code, op1=op1, op2=op2))
 
@@ -84,6 +84,7 @@ def main():
             p = Program()
             p.load(fname)
             print("%s -> %d" % (fname, vm.run(p)))
+
 
 if __name__ == '__main__':
     main()
