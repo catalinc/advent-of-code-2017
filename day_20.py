@@ -17,6 +17,9 @@ class Vector3(object):
         self.y += other.y
         self.z += other.z
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z
+
     def __str__(self):
         return "<%d, %d, %d>" % (self.x, self.y, self.z)
 
@@ -34,6 +37,9 @@ class Particle(object):
 
     def distance_from_origin(self):
         return abs(self.p.x) + abs(self.p.y) + abs(self.p.z)
+
+    def collide(self, other):
+        return self.p == other.p
 
     def __str__(self):
         return "p=%s v=%s a=%s" % (self.p, self.v, self.a)
@@ -74,6 +80,11 @@ class Test(unittest.TestCase):
     def test_closest_to_origin(self):
         system = System('day_20.test')
         self.assertEqual(0, system.run())
+
+    def test_collision(self):
+        p0 = Particle(Vector3(1, 2, 3), Vector3(0, 1, 2), Vector3(1, 1, 1))
+        p1 = Particle(Vector3(1, 2, 3), Vector3(3, 0, 2), Vector3(0, 1, 1))
+        self.assertTrue(p0.collide(p1))
 
 
 if __name__ == '__main__':
