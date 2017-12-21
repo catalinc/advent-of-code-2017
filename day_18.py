@@ -1,8 +1,8 @@
 # Solution to http://adventofcode.com/2017/day/18
 
-import unittest
-import sys
 import collections
+import sys
+import unittest
 
 Instruction = collections.namedtuple('Instruction', 'code, op1, op2')
 
@@ -12,14 +12,15 @@ class Program(object):
     WAITING_FOR_IO = 1
     TERMINATED = 2
 
-    def __init__(self, pid, filename):
+    def __init__(self, pid, inbox, outbox, filename):
         self.pc = 0
         self.instructions = []
         self.pid = pid
         self.registers = collections.defaultdict(int)
         self.registers['p'] = pid
-        self.inbox = []
-        self.outbox = []
+        self.inbox = inbox
+        self.outbox = outbox
+        self.snd_count = 0
         self.state = Program.RUNNING
         with open(filename, 'r') as infile:
             for line in infile:
@@ -52,6 +53,7 @@ class Program(object):
             elif instr.code == 'snd':
                 v = self._value(instr.op1)
                 self.outbox.append(v)
+                self.snd_count += 1
             elif instr.code == 'rcv':
                 if self.inbox:
                     v = self.inbox.pop(0)
@@ -64,44 +66,53 @@ class Program(object):
         else:
             self.state = Program.TERMINATED
 
+    def terminated(self):
+        return self.state == Program.TERMINATED
+
+    def waiting_for_io(self):
+        return self.state == Program.WAITING_FOR_IO
+
     def _value(self, s):
         if 'a' <= s <= 'z':
             return self.registers[s]
         return int(s)
 
+    def __str__(self):
+        return "pid=%d pc=%d state=%d snd_count=%d registers=%s" % \
+               (self.pid, self.pc, self.state, self.snd_count, self.registers)
+
 
 class System(object):
 
     def __init__(self, filename):
-        self.program_0 = Program(0, filename)
-        self.program_1 = Program(1, filename)
+        inbox, outbox = [], []
+        self.p0 = Program(0, inbox, outbox, filename)
+        self.p1 = Program(1, outbox, inbox, filename)
 
     def run(self):
-        pass
+        while True:
+            self.p0.run()
+            self.p1.run()
+            if self.p0.terminated() or self.p1.terminated():
+                break
+            if self.p0.waiting_for_io() and self.p1.waiting_for_io():
+                break
+
 
 class Test(unittest.TestCase):
 
-    def test_load_program(self):
-        p = Program()
-        p.load('day_18.test')
-        self.assertEqual(10, len(p.instructions))
-        first = Instruction(code='set', op1='a', op2='1')
-        self.assertEqual(first, p.instructions[0])
-
-    def test_run_program(self):
-        p = Program()
-        p.load('day_18.test')
-        vm = Program()
-        self.assertEqual(4, vm.run(p))
+    def test_run_system(self):
+        system = System('day_18.test')
+        system.run()
+        self.assertEqual(3, system.p1.snd_count)
 
 
 def main():
     if len(sys.argv) >= 2:
-        vm = Program()
-        for fname in sys.argv[1:]:
-            p = Program()
-            p.load(fname)
-            print("%s -> %d" % (fname, vm.run(p)))
+        for name in sys.argv[1:]:
+            system = System(name)
+            system.run()
+            print("%s -> %s %s" % (name, system.p0, system.p1))
     else:
         unittest.main()
 
