@@ -65,13 +65,13 @@ class Matrix(object):
         result.data = list([list(t) for t in zip(*self.data[::-1])])
         return result
 
-    def flip_left(self):
+    def flip_h(self):
         result = Matrix()
         for row in self.data:
             result.data.append(row[::-1])
         return result
 
-    def flip_up(self):
+    def flip_v(self):
         size = self.size()
         result = Matrix(size)
         for c in range(size):
@@ -123,15 +123,22 @@ class Test(unittest.TestCase):
     def test_matrix_transformations(self):
         m = Matrix.from_pattern('..#/#../###')
         self.assertEqual('##./#../#.#', str(m.rotate()))
-        self.assertEqual('#../..#/###', str(m.flip_left()))
-        self.assertEqual('###/#../..#', str(m.flip_up()))
+        self.assertEqual('#../..#/###', str(m.flip_h()))
+        self.assertEqual('###/#../..#', str(m.flip_v()))
 
     def test_build_rule_from_str(self):
         s = '../.# => ##./#../...'
         rule = Rule.from_str(s)
-        self.assertEqual(6, len(rule.patterns))
+        self.assertEqual(12, len(rule.patterns))
         self.assertEqual(2, rule.size())
         self.assertEqual(3, rule.output.size())
+
+    def test_rule_match(self):
+        r = Rule.from_str('.#./..#/### => ####/####/####/####')
+        matches = ['.#./#../###', '#../#.#/##.', '###/..#/.#.']
+        for p in matches:
+            m = Matrix.from_pattern(p)
+            self.assertTrue(r.match(m), 'failed for %s' % m)
 
     def test_run_fractal_program(self):
         fractal = FractalProgram('day_21.test')
@@ -146,8 +153,10 @@ class Rule(object):
         self.patterns = [first]
         for _ in range(3):
             self.patterns.append(self.patterns[-1].rotate())
-        self.patterns.append(first.flip_left())
-        self.patterns.append(first.flip_up())
+        for i in range(4):
+            p = self.patterns[i]
+            self.patterns.append(p.flip_h())
+            self.patterns.append(p.flip_v())
         self.output = Matrix.from_pattern(output)
 
     def match(self, matrix):
@@ -195,12 +204,16 @@ class FractalProgram(object):
         return matrix
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) >= 2:
         for name in sys.argv[1:]:
             program = FractalProgram(name)
-            matrix = program.run(5)
-            print('%s -> %d', matrix.sum())
+            matrix = program.run(18)
+            print('%s -> %d' % (name, matrix.sum()))
         pass
     else:
         unittest.main()
+
+
+if __name__ == '__main__':
+    main()
