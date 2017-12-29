@@ -19,10 +19,10 @@ class Layer(object):
             self.direction = -1
         self.scanner = self.scanner + self.direction
 
-    def is_scanner_at_top_after(self, nticks):
+    def is_scanner_at_top_after(self, ticks):
         position = self.scanner
         direction = self.direction
-        for _ in range(nticks):
+        for _ in range(ticks):
             if position == 0 and direction == -1:
                 direction = 1
             elif position == self.size - 1 and direction == 1:
@@ -128,13 +128,13 @@ def parse_layer(s):
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            with open(fname, 'r') as infile:
+        for name in sys.argv[1:]:
+            with open(name, 'r') as infile:
                 world = World()
                 for line in infile:
                     world.firewall.add_layer(parse_layer(line))
                 print("'%s' -> %d %d" %
-                      (fname, world.run(), world.find_min_delay()))
+                      (name, world.run(), world.find_min_delay()))
     else:
         unittest.main()
 

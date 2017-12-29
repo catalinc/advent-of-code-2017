@@ -7,6 +7,7 @@ GROUP = 1
 GARBAGE = 2
 SKIP = 3
 
+
 def score(stream):
     total, current, garbage = 0, 0, 0
     state, previous = GROUP, None
@@ -69,8 +70,9 @@ class Test(unittest.TestCase):
                              "failed for '%s' actual %d expected %d" %
                              (stream, actual, expected))
 
-def reader(fname):
-    with open(fname) as infile:
+
+def reader(name):
+    with open(name) as infile:
         while True:
             char = infile.read(1)
             if char:
@@ -78,12 +80,14 @@ def reader(fname):
             else:
                 return
 
+
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            print('%s -> %s' % (fname, score(reader(fname))))
+        for name in sys.argv[1:]:
+            print('%s -> %s' % (name, score(reader(name))))
     else:
         unittest.main()
+
 
 if __name__ == '__main__':
     main()

@@ -4,17 +4,17 @@ import unittest
 import sys
 
 
-def valid_no_duplicates(str):
+def valid_no_duplicates(s):
     words = set()
-    for w in str.split():
+    for w in s.split():
         if w in words:
             return False
         words.add(w)
     return True
 
 
-def valid_no_anagrams(str):
-    words = [''.join(sorted(w)) for w in str.split()]
+def valid_no_anagrams(s):
+    words = [''.join(sorted(w)) for w in s.split()]
     seen = set()
     for w in words:
         if w in seen:
@@ -48,9 +48,9 @@ class Test(unittest.TestCase):
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
         for filename in sys.argv[1:]:
-            with open(filename) as inputfile:
+            with open(filename) as infile:
                 count = 0
-                for line in inputfile:
+                for line in infile:
                     if valid_no_anagrams(line):
                         count += 1
                 print("%d valid passwords in %s" % (count, filename))

@@ -42,6 +42,7 @@ def knot_hash(key, rounds=64):
         blocks.append(b)
     return ''.join([format(b, '02x') for b in blocks])
 
+
 class Test(unittest.TestCase):
 
     def test_hash_round(self):

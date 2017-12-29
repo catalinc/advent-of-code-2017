@@ -63,12 +63,12 @@ class Test(unittest.TestCase):
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            with open(fname, 'r') as infile:
+        for name in sys.argv[1:]:
+            with open(name, 'r') as infile:
                 walker = HexWalker()
                 for directions in infile:
                     walker.walk(directions)
-                print("'%s' -> %d %d" % (fname, walker.steps(), walker.furthest))
+                print("'%s' -> %d %d" % (name, walker.steps(), walker.furthest))
     else:
         unittest.main()
 

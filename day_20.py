@@ -105,7 +105,7 @@ class Test(unittest.TestCase):
         self.assertTrue(p0.collide(p1))
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) >= 2:
         for name in sys.argv[1:]:
             system = System(name)
@@ -113,3 +113,7 @@ if __name__ == '__main__':
             print("%s -> %s | %d" % (name, system.closest_to_origin(), len(system.particles)))
     else:
         unittest.main()
+
+
+if __name__ == '__main__':
+    main()

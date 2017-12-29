@@ -75,12 +75,12 @@ class Test(unittest.TestCase):
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            with open(fname, 'r') as infile:
+        for name in sys.argv[1:]:
+            with open(name, 'r') as infile:
                 g = Graph()
                 for line in infile:
                     g.add_node(*parse_node(line))
-                print('%s -> %d %d' % (fname, len(g.reachable(0)), g.count_groups()))
+                print('%s -> %d %d' % (name, len(g.reachable(0)), g.count_groups()))
     else:
         unittest.main()
 

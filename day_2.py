@@ -64,7 +64,7 @@ class Test(unittest.TestCase):
         self.assertEqual(9, matrix_checksum(test_data, row_fn=even_divisible))
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) >= 2:
         for name in sys.argv[1:]:
             matrix = parse_matrix_from_file(name)
@@ -73,3 +73,7 @@ if __name__ == '__main__':
                       (fn.__name__, name, matrix_checksum(matrix, row_fn=fn)))
     else:
         unittest.main()
+
+
+if __name__ == '__main__':
+    main()

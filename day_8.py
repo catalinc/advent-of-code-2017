@@ -73,12 +73,12 @@ class Test(unittest.TestCase):
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            with open(fname, 'r') as infile:
+        for name in sys.argv[1:]:
+            with open(name, 'r') as infile:
                 cpu = CPU()
                 for line in infile:
                     cpu.execute(line)
-                print('%s -> %d %d' % (fname, cpu.max(), cpu.max_ever))
+                print('%s -> %d %d' % (name, cpu.max(), cpu.max_ever))
     else:
         unittest.main()
 

@@ -1,4 +1,5 @@
 # Solution to https://adventofcode.com/2017/day/5
+
 import unittest
 import sys
 
@@ -22,9 +23,9 @@ def count_jumps(program, max_offset=0):
     return jumps
 
 
-def load_program(fname):
+def load_program(name):
     program = []
-    with open(fname, 'r') as infile:
+    with open(name, 'r') as infile:
         for line in infile:
             program.append(int(line))
     return program
@@ -41,9 +42,9 @@ class Test(unittest.TestCase):
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            program = load_program(fname)
-            print("program '%s' -> %d" % (fname, count_jumps(program, max_offset=3)))
+        for name in sys.argv[1:]:
+            program = load_program(name)
+            print("program '%s' -> %d" % (name, count_jumps(program, max_offset=3)))
     else:
         unittest.main()
 

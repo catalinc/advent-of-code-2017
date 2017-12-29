@@ -139,7 +139,7 @@ def main():
         for name in sys.argv[1:]:
             grid = parse_grid(name)
             x, y = grid.center()
-            virus = MutatedVirus(x, y, grid)  # Virus(x, y, grid)
+            virus = MutatedVirus(x, y, grid)  # for part 1 replace with Virus(x, y, grid)
             for _ in range(10_000_000):
                 virus.burst()
             print('%s -> %d' % (name, virus.infections))

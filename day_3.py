@@ -18,9 +18,9 @@ def coordinates(n):
         x += d[0]
         y += d[1]
         i += 1
-        if abs(x) == abs(y) or i == 2:        # corner || 2 -> change direction
+        if abs(x) == abs(y) or i == 2:  # corner || 2 -> change direction
             j = (j + 1) % len(directions)
-            if j == 1 and i != 2:             # bottom right != 2 -> step right
+            if j == 1 and i != 2:  # bottom right != 2 -> step right
                 x += 1
                 i += 1
     return x, y
@@ -93,7 +93,7 @@ class Test(unittest.TestCase):
                              (n, expected, actual))
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) >= 2:
         for x in sys.argv[1:]:
             n = int(x)
@@ -101,3 +101,7 @@ if __name__ == '__main__':
                   (n, distance(n), memory_test(n)))
     else:
         unittest.main()
+
+
+if __name__ == '__main__':
+    main()

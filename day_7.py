@@ -59,7 +59,6 @@ class Tower(object):
             return self._balanced_weight(self.root_program(), diff)
         else:
             return 0
-                   
 
     def _balanced_weight(self, program, diff):
         children = self.children(program)
@@ -69,7 +68,6 @@ class Tower(object):
             if d != 0:
                 counter = collections.Counter(weights)
                 balanced, unbalanced = counter.most_common()
-                balanced = balanced[0]
                 unbalanced = unbalanced[0]
                 for child in children:
                     if child.total_weight == unbalanced:
@@ -166,13 +164,13 @@ cntj (57)"""
 
 def main():
     if len(sys.argv) >= 2:
-        for fname in sys.argv[1:]:
-            with open(fname, 'r') as infile:
+        for name in sys.argv[1:]:
+            with open(name, 'r') as infile:
                 tower = Tower()
                 for line in infile:
                     tower.parse_program(line)
                 tower.compute_total_weights()
-                print('%s -> %s %d' % (fname, tower.root_program(), tower.balanced_weight()))
+                print('%s -> %s %d' % (name, tower.root_program(), tower.balanced_weight()))
     else:
         unittest.main()
 
