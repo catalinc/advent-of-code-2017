@@ -70,13 +70,34 @@ class Test(unittest.TestCase):
         self.assertEqual(2, cpu.stats['mul'])
 
 
+def run_compiled():
+    b = 81 * 100 + 100000
+    c = b + 17000
+    h = 0
+    while True:
+        f = 1
+        d = 2
+        while True:
+            if b % d == 0:
+                f = 0
+            d = d + 1
+            if d != b:
+                continue
+            if f == 0:
+                h = h + 1
+            if b == c:
+                return h
+            b = b + 17
+            break
+
+
 def main():
     if len(sys.argv) >= 2:
         for name in sys.argv[1:]:
             cpu = Cpu()
-            cpu.registers['a'] = 1  # part 2
             cpu.run(load_instructions(name))
-            print("%s -> %s" % (name, cpu))
+            h = run_compiled()  # part 2
+            print("%s -> %s %d" % (name, cpu, h))
     else:
         unittest.main()
 
